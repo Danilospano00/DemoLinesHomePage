@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lines_demo_project/models/home_page_model.dart';
 import 'package:lines_demo_project/theme/paint_utils.dart';
 import 'package:lines_demo_project/view/widget/custom_elevated_button.dart';
 import 'package:lines_demo_project/view/widget/page_indicator_widget.dart';
@@ -15,6 +16,40 @@ class _HomePageState extends State<HomePage> {
   final PageController pageController = PageController();
 
   int _currentIndex = 0;
+
+  final pageModelList = [
+    HomePageModel(
+      image: Image.asset(
+        "assets/images/calendar.png",
+      ),
+      title: "Monitora il ciclo \ne gioca con Droppy",
+      description: "Tieni sotto controllo il tuo ciclo mestruale e, quando hai le mestruazioni, prenditi cura della tua Droppy.",
+    ),
+    HomePageModel(
+      image: Image.asset(
+        "assets/images/break.png",
+        height: 246.h,
+      ),
+      title: "Consigli e contenuti di esperti solo per te",
+      description: "Accedi a tanti contenuti creati per te dai nostri esperti e professionisti e approfondisci i topic più rilevanti per la fase del ciclo in cui ti trovi.",
+    ),
+    HomePageModel(
+      image: Image.asset(
+        "assets/images/yoga.png",
+        height: 246.h,
+      ),
+      title: "Più partecipi, \npiù accumuli punti",
+      description: "Consenti a myDrop di inviarti notifiche: ti aiuterà a monitorare il tuo ciclo e il tuo benessere inviandoti periodicamente consigli e promemoria!",
+    ),
+    HomePageModel(
+      image: Image.asset(
+        "assets/images/love.png",
+        height: 260.h,
+      ),
+      title: "Attiva il tuo calendario",
+      description: "Consenti a myDrop di inviarti notifiche: ti aiuterà a monitorare il tuo ciclo e il tuo benessere inviandoti periodicamente consigli e promemoria!",
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +80,13 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Expanded(
                   child: PageView.builder(
-                    physics: _currentIndex == 3 ? const NeverScrollableScrollPhysics() : const ScrollPhysics(),
+                    physics: _isLastPageShowed ? const NeverScrollableScrollPhysics() : const ScrollPhysics(),
                     controller: pageController,
                     onPageChanged: (value) {
                       setState(() {});
                       _currentIndex = value;
                     },
-                    itemCount: 4,
+                    itemCount: pageModelList.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.symmetric(
@@ -62,37 +97,34 @@ class _HomePageState extends State<HomePage> {
                             SizedBox(
                               height: 100.h,
                             ),
-                            _imageFromIndex(
-                              index,
+                            pageModelList[index].image,
+                            SizedBox(
+                              height: 14.h,
                             ),
-                            Column(
-                              children: [
-                                Text(
-                                  _titleFromIndex(index),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 24.sp,
-                                    foreground: PaintUtils.getLinearGradientPaint(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.topRight,
-                                      colors: const [
-                                        Color(0xFFB63AB4),
-                                        Color(0xFF513B9F),
-                                      ],
-                                    ),
-                                  ),
+                            Text(
+                              pageModelList[index].title,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 24.sp,
+                                foreground: PaintUtils.getLinearGradientPaint(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.topRight,
+                                  colors: const [
+                                    Color(0xFFB63AB4),
+                                    Color(0xFF513B9F),
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: 35.h,
-                                ),
-                                Text(
-                                  _descriptionFromIndex(index),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                  ),
-                                ),
-                              ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 35.h,
+                            ),
+                            Text(
+                              pageModelList[index].description,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                              ),
                             ),
                           ],
                         ),
@@ -100,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                 ),
-                if (_currentIndex != 3) ...[
+                if (!_isLastPageShowed) ...[
                   PageIndicatorWidget(
                     itemCount: 3,
                     currentIndex: _currentIndex,
@@ -161,62 +193,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  String _titleFromIndex(int index) {
-    switch (index) {
-      case 0:
-        return "Monitora il ciclo e gioca con Droppy";
-      case 1:
-        return "Consigli e contenuti di esperti solo per te";
-      case 2:
-        return "Più partecipi, più accumuli punti";
-      case 3:
-        return "Attiva il tuo calendario";
-      default:
-        return "";
-    }
-  }
-
-  String _descriptionFromIndex(int index) {
-    switch (index) {
-      case 0:
-        return "Tieni sotto controllo il tuo ciclo mestruale e, quando hai le mestruazioni, prenditi cura della tua Droppy.";
-      case 1:
-        return "Accedi a tanti contenuti creati per te dai nostri esperti e professionisti e approfondisci i topic più rilevanti per la fase del ciclo in cui ti trovi.";
-      case 2:
-        return "Scopri le missioni, ottieni badge e coins per accedere a premi contenuti esclusivi.";
-      case 3:
-        return "Consenti a myDrop di inviarti notifiche: ti aiuterà a monitorare il tuo ciclo e il tuo benessere inviandoti periodicamente consigli e promemoria!";
-      default:
-        return "";
-    }
-  }
-
-  Image _imageFromIndex(int index) {
-    switch (index) {
-      case 0:
-        return Image.asset(
-          "assets/images/calendar.png",
-        );
-      case 1:
-        return Image.asset(
-          "assets/images/break.png",
-          height: 246.h,
-        );
-      case 2:
-        return Image.asset(
-          "assets/images/yoga.png",
-          height: 246.h,
-        );
-      case 3:
-        return Image.asset(
-          "assets/images/love.png",
-          height: 260.h,
-        );
-      default:
-        return Image.asset("");
-    }
-  }
-
   void _animateToPageByIndex(int index) {
     pageController.animateToPage(
       index,
@@ -224,4 +200,6 @@ class _HomePageState extends State<HomePage> {
       curve: Curves.easeInOut,
     );
   }
+
+  bool get _isLastPageShowed => _currentIndex == pageModelList.length - 1;
 }
