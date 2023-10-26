@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// A utility class for creating [Paint] objects with linear gradient backgrounds.
 class PaintUtils {
   static Paint getLinearGradientPaint({
     required Alignment begin,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+/// This is a custom [ElevatedButton] that has a custom background
 class CustomElevatedButton extends StatelessWidget {
   final String text;
   final Function() onPressed;
@@ -25,7 +26,7 @@ class CustomElevatedButton extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: <Color>[
+            colors: [
               Color(0xFFB63AB4),
               Color(0xFF513B9F),
             ],

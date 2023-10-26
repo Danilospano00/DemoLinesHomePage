@@ -13,43 +13,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final PageController pageController = PageController();
+  final PageController _pageController = PageController();
 
   int _currentIndex = 0;
-
-  final pageModelList = [
-    HomePageModel(
-      image: Image.asset(
-        "assets/images/calendar.png",
-      ),
-      title: "Monitora il ciclo \ne gioca con Droppy",
-      description: "Tieni sotto controllo il tuo ciclo mestruale e, quando hai le mestruazioni, prenditi cura della tua Droppy.",
-    ),
-    HomePageModel(
-      image: Image.asset(
-        "assets/images/break.png",
-        height: 246.h,
-      ),
-      title: "Consigli e contenuti di esperti solo per te",
-      description: "Accedi a tanti contenuti creati per te dai nostri esperti e professionisti e approfondisci i topic più rilevanti per la fase del ciclo in cui ti trovi.",
-    ),
-    HomePageModel(
-      image: Image.asset(
-        "assets/images/yoga.png",
-        height: 246.h,
-      ),
-      title: "Più partecipi, \npiù accumuli punti",
-      description: "Consenti a myDrop di inviarti notifiche: ti aiuterà a monitorare il tuo ciclo e il tuo benessere inviandoti periodicamente consigli e promemoria!",
-    ),
-    HomePageModel(
-      image: Image.asset(
-        "assets/images/love.png",
-        height: 260.h,
-      ),
-      title: "Attiva il tuo calendario",
-      description: "Consenti a myDrop di inviarti notifiche: ti aiuterà a monitorare il tuo ciclo e il tuo benessere inviandoti periodicamente consigli e promemoria!",
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -81,12 +47,12 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: PageView.builder(
                     physics: _isLastPageShowed ? const NeverScrollableScrollPhysics() : const ScrollPhysics(),
-                    controller: pageController,
+                    controller: _pageController,
                     onPageChanged: (value) {
                       setState(() {});
                       _currentIndex = value;
                     },
-                    itemCount: pageModelList.length,
+                    itemCount: _pageModelList.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.symmetric(
@@ -97,12 +63,12 @@ class _HomePageState extends State<HomePage> {
                             SizedBox(
                               height: 100.h,
                             ),
-                            pageModelList[index].image,
+                            _pageModelList[index].image,
                             SizedBox(
                               height: 14.h,
                             ),
                             Text(
-                              pageModelList[index].title,
+                              _pageModelList[index].title,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 24.sp,
@@ -120,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                               height: 35.h,
                             ),
                             Text(
-                              pageModelList[index].description,
+                              _pageModelList[index].description,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 16.sp,
@@ -134,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 if (!_isLastPageShowed) ...[
                   PageIndicatorWidget(
-                    itemCount: 3,
+                    itemCount: _pageModelList.length - 1,
                     currentIndex: _currentIndex,
                   ),
                   SizedBox(
@@ -193,13 +159,50 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  /// Animate the PageView.builder to the specified index
   void _animateToPageByIndex(int index) {
-    pageController.animateToPage(
+    _pageController.animateToPage(
       index,
       duration: const Duration(milliseconds: 350),
       curve: Curves.easeInOut,
     );
   }
 
-  bool get _isLastPageShowed => _currentIndex == pageModelList.length - 1;
+  /// Return all the pages data that should showed
+  List<HomePageModel> get _pageModelList => [
+        HomePageModel(
+          image: Image.asset(
+            "assets/images/calendar.png",
+          ),
+          title: "Monitora il ciclo \ne gioca con Droppy",
+          description: "Tieni sotto controllo il tuo ciclo mestruale e, quando hai le mestruazioni, prenditi cura della tua Droppy.",
+        ),
+        HomePageModel(
+          image: Image.asset(
+            "assets/images/break.png",
+            height: 246.h,
+          ),
+          title: "Consigli e contenuti di esperti solo per te",
+          description: "Accedi a tanti contenuti creati per te dai nostri esperti e professionisti e approfondisci i topic più rilevanti per la fase del ciclo in cui ti trovi.",
+        ),
+        HomePageModel(
+          image: Image.asset(
+            "assets/images/yoga.png",
+            height: 246.h,
+          ),
+          title: "Più partecipi, \npiù accumuli punti",
+          description: "Consenti a myDrop di inviarti notifiche: ti aiuterà a monitorare il tuo ciclo e il tuo benessere inviandoti periodicamente consigli e promemoria!",
+        ),
+        HomePageModel(
+          image: Image.asset(
+            "assets/images/love.png",
+            height: 260.h,
+          ),
+          title: "Attiva il tuo calendario",
+          description: "Consenti a myDrop di inviarti notifiche: ti aiuterà a monitorare il tuo ciclo e il tuo benessere inviandoti periodicamente consigli e promemoria!",
+        ),
+      ];
+
+  /// Return true if the showed page is the last of [_pageModelList]
+  bool get _isLastPageShowed => _currentIndex == _pageModelList.length - 1;
 }
